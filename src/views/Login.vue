@@ -1,90 +1,130 @@
 <template>
-  <!-- v-app 组件中。 该组件是确保正确的跨浏览器兼容性所必需的。
-       id  设置组件上的 DOM id -->
   <v-app id="login">
-    <!-- 根据应用组件来调整你的内容 -->
-    <v-main class="grey lighten-3">
-    <!-- v-container 将网站内容居中和水平填充。 -->
-    <v-container class="login">
-      <v-row>
-        <!-- 包裹内容  cols 属性定义列宽  sm-->
-        <v-col cols="12" sm="8">
-            <v-form
-              ref="form"
-              v-model="valid"
-              lazy-validation
-            >
-              <h1>登录</h1>
-              <v-text-field
-                v-model="name"
-                :counter="10"
-                :rules="nameRules"
-                label="账号"
-                required
-              ></v-text-field>
+    <v-main>
+        <v-container class="login">
+            <v-row>
+                <!-- xs:超小；sm:小；md:中等；lg:大 -->
+                <v-col cols="12" sm="8">
+                    <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                    >
+                        <h1>登录</h1>
+                        <!--  -->
+                        <v-text-field
+                        v-model="username"
+                        :counter="10"
+                        :rules="nameRules"
+                        label="账号"
+                        required
+                        ></v-text-field>
 
-             <v-text-field
-              v-model="password"
-              :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordRules"
-              :type="show ? 'text' : 'password'"
-              label="密码"
-              hint="至少3个字符"
-              counter
-              @click:append="show = !show"
-            ></v-text-field>
+                        <v-text-field
+                            v-model="password"
+                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :rules="passwordRules"
+                            :type="show1 ? 'text' : 'password'"
+                            name="password"
+                            label="密码"
+                            hint="至少3个字符"
+                            counter
+                            @click:append="show1 = !show1"
+                        ></v-text-field>
 
-              <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                @click="login"
-              >
-                登录
-              </v-btn>
-
-              <v-btn
-                color="primary"
-                class="mr-4"
-                @click="register"
-              >
-                注册
-              </v-btn>
-            </v-form>
-        </v-col>
-      </v-row>
-      
-    </v-container>
+                       
 
 
+                        <v-btn
+                        :disabled="!valid"
+                        color="success"
+                        class="mr-4"
+                        @click="login"
+                        >
+                        登录
+                        </v-btn>
 
-       
+                        <v-btn
+                        color="primary"
+                        class="mr-4"
+                        @click="register"
+                        >
+                        注册
+                        </v-btn>
+
+                       
+                    </v-form>
+
+
+                </v-col>
+            </v-row>
+        </v-container>
     </v-main>
-  </v-app>
+    
 
+  </v-app>
 </template>
+
 <script>
   export default {
     data: () => ({
       valid: true,
-      name: '',
+      show1: false,
+      username: '',
       nameRules: [
         v => !!v || '账号不能为空',
-        v => (v && v.length <= 20) || '您输入的账号格式不正确',
+        v => (v && v.length <= 10) || '您输入的账号格式不正确',
       ],
-      show: false,
       password: '',
       passwordRules: [
         v => !!v || '密码不能为空',
-        v => (v && v.length >= 3)|| '您输入的密码格式有误',
+        v => (v && v.length >= 3) || '您输入的密码格式有误',
       ],
+    
     }),
 
     methods: {
-      validate () {
-        this.$refs.form.validate()
+      login () {
+        this.$api.user.login(
+          //请求参数
+          {
+              "username": this.username,
+              "password": this.password
+          }
+        ).then((result) => {
+          //打印响应
+          console.log(result)
+          //当Http响应状态码为200的时候，再进行业务状态码判断
+          if(200 == result.status){
+            //打印业务状态码
+            console.log(result.data.code)
+            if(0 == result.data.code){//业务状态码为0代表登录成功
+              //打印token信息
+              console.log(result.data.token)
+              //1.把token信息放在本地
+              localStorage.setItem('token', result.data.token)
+              //2.页面跳转到首页
+              this.$router.push('/layout/case')
+            }else if(40013 == result.data.code){
+              window.alert("用户未注册")
+            }else if(40014 == result.data.code){
+              window.alert("密码错误")
+            }else{
+              window.alert("登录失败")
+            }
+            
+          }else{
+            //当Http响应状态码不是200，登录失败
+            window.alert("登录失败")
+          }
+          
+        }).catch((err) => {
+          console.log(err)
+        });
       },
-
+      register () {
+        
+      }
     },
   }
 </script>

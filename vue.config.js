@@ -3,5 +3,6 @@ module.exports = defineConfig({
   transpileDependencies: [
     'vuetify'
   ],
-  lintOnSave: false,  //保证编译不会报错
+  //保证编译不会报错
+  lintOnSave: false
 })
