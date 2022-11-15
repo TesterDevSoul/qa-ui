@@ -9,8 +9,7 @@ var instance = axios.create({
         'Content-Type': 'application/json; charset=utf-8',
     },
     //基础后端服务地址
-    // baseURL : 'http://39.102.48.202:6099',
-    baseURL : 'https://testplatform.hogwarts.ceshiren.com',
+    baseURL : 'http://127.0.0.1:8080',
     //默认前端请求超时时间 毫秒
     timeout : 2500,
 })

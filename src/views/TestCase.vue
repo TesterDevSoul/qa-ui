@@ -55,7 +55,7 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.case_title"
+                      v-model="editedItem.caseTitle"
                       label="用例标题"
                     ></v-text-field>
                   </v-col>
@@ -142,7 +142,7 @@
           sortable: false,
           value: 'id',
         },
-        { text: '用例标题', value: 'case_title' },
+        { text: '用例标题', value: 'caseTitle' },
         { text: '备注', value: 'remark' },
         { text: '操作', value: 'actions', sortable: false },
       ],
@@ -150,7 +150,7 @@
       editedIndex: -1,
       editedItem: {
         id: 0,
-        case_title: '',
+        caseTitle: '',
         remark: '',
       },
       defaultItem: {
@@ -183,7 +183,7 @@
       initialize () {
         this.$api.testcase.getTestcase().then((result) => {
           console.log("getTestcase", result)
-          this.desserts = result.data
+          this.desserts = result.data.data
         }).catch((err) => {
           console.log(err)
         });

@@ -123,7 +123,8 @@
         });
       },
       register () {
-        
+         //页面跳转到注册页面
+        this.$router.push('/register');
       }
     },
   }

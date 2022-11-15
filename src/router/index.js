@@ -5,6 +5,7 @@ import TestCase from '../views/TestCase.vue'
 import TestTask from '../views/TestTask.vue'
 import TestReport from '../views/TestReport.vue'
 import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+  }, 
+  {
+    path: '/register',
+    name: 'register',
+    component: Register,
   },
   {
     path: '/layout',
@@ -55,6 +61,8 @@ const router = new VueRouter({
 router.beforeEach((to,from,next) =>{
   //1.如果是登录的路由，直接next()
   if('/login' == to.path){
+    next();
+  }else if('/register' == to.path){
     next();
   }else{
     //2.非登录页面，其他所有页面，需要验证是否登录

@@ -8,7 +8,7 @@ const testcase = {
    getTestcase(params){
     return axios({
         method: "GET",
-        url: "/testcase",
+        url: "/case",
         params: params //传递的参数拼接URL，用params
     
     })

@@ -2,7 +2,6 @@
 import testcase from './testcase'
 import user from './user'
 
-
 const api = {
     testcase,
     user
